@@ -1,1 +1,6 @@
 transformers
+langchain-community
+langchain-chroma
+langchain_huggingface
+pysqlite3-binary
+gradio
