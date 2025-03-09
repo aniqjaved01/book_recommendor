@@ -92,8 +92,8 @@ Ensure you have the following installed:
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/yourusername/semantic-book-recommender.git
-   cd semantic-book-recommender
+   git clone https://github.com/aniqjaved01/book_recommender.git
+   cd book_recommender
    ```
 
 2. Install dependencies:
