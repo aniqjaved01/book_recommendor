@@ -1,6 +1,7 @@
 import pandas as pd
 import numpy as np
 import gradio as gr
+import os
 ######### FOR CHROMA #########
 import sys
 import importlib
@@ -27,6 +28,7 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
+cohere_key = os.environ['cohere_api_key']
 books = pd.read_csv("books_with_emotions.csv")
 books["large_thumbnail"] = books["thumbnail"] + "&fife=w800"
 books["large_thumbnail"] = np.where(
@@ -42,7 +44,7 @@ documents_500 = documents[0:500]
 
 # embedding_model = HuggingFaceEmbeddings(model_name="sentence-transformers/all-mpnet-base-v2")
 embeddings = CohereEmbeddings(
-    cohere_api_key="sNlGxlR3ACiGrzmFpFMtOMEULX4CFWtrOVaPLW7z", model="embed-english-v3.0"
+    cohere_api_key=cohere_key, model="embed-english-v3.0"
 )
 
 # db_books = Chroma.from_documents(documents_500, embedding=embedding_model)
