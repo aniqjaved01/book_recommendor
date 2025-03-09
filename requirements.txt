@@ -4,3 +4,4 @@ langchain-chroma
 langchain_huggingface
 pysqlite3-binary
 gradio
+langchain-cohere

@@ -21,6 +21,7 @@ from langchain_community.document_loaders import TextLoader
 from langchain_text_splitters import CharacterTextSplitter
 from langchain_huggingface import HuggingFaceEmbeddings
 from langchain_chroma import Chroma
+from langchain_cohere import CohereEmbeddings
 from dotenv import load_dotenv
 
 
@@ -30,7 +31,7 @@ books = pd.read_csv("books_with_emotions.csv")
 books["large_thumbnail"] = books["thumbnail"] + "&fife=w800"
 books["large_thumbnail"] = np.where(
     books["large_thumbnail"].isna(),
-    "cover-not-found.jpg",
+    "cover-not-found.jpeg",
     books["large_thumbnail"]
 )
 
@@ -39,8 +40,16 @@ text_splitter = CharacterTextSplitter(separator="\n", chunk_size = 0, chunk_over
 documents = text_splitter.split_documents(raw_documents)
 documents_500 = documents[0:500]
 
-embedding_model = HuggingFaceEmbeddings(model_name="sentence-transformers/all-mpnet-base-v2")
-db_books = Chroma.from_documents(documents_500, embedding=embedding_model)
+# embedding_model = HuggingFaceEmbeddings(model_name="sentence-transformers/all-mpnet-base-v2")
+embeddings = CohereEmbeddings(
+    cohere_api_key="sNlGxlR3ACiGrzmFpFMtOMEULX4CFWtrOVaPLW7z", model="embed-english-v3.0"
+)
+
+# db_books = Chroma.from_documents(documents_500, embedding=embedding_model)
+db_books = Chroma.from_documents(documents_500, embedding=embeddings)
+# db_books = 
+# rec = db_books.similarity_search_with_score("A story about kindness", k = 1)
+# print(rec)
 
 def retrieve_semantic_recommendations(
         query: str,
@@ -53,7 +62,8 @@ def retrieve_semantic_recommendations(
     # Using the similarlty search to get top 50 results. Taking their isbn out from page_content
     # and then taking 16 out of all of them.
     recs = db_books.similarity_search_with_score(query, k = initial_top_k)
-    books_list = [int(rec.page_content.strip('"').split()[0]) for rec in recs]
+    
+    books_list = [int(rec[0].page_content.strip('"').split()[0]) for rec in recs]
     book_recs = books[books["isbn13"].isin(books_list)].head(final_top_k)
 
     # If category is specified then only take top 16 of that category else take top 16
@@ -93,7 +103,7 @@ def recommend_books(
         authors_split = row["authors"].split(";")
         if len(authors_split) == 2:
             authors_str = f"{authors_split[0]} and {authors_split[1]}"
-        elif len(authors_split > 2):
+        elif len(authors_split) > 2:
             authors_str = f"{', '.join(authors_split[:-1])}, and {authors_split[-1]}"
         else:
             authors_str = row["authors"]
