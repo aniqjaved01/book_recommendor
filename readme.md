@@ -16,10 +16,10 @@ A machine-learning-based book recommendation system that leverages natural langu
 - **Dataset**: A collection of 7,000 books from Kaggle.
 - **Handling Missing Values**:
   - Generated a heatmap to visualize missing data.
-  - ![Alt text](images/heatmap.png)
+  ![Alt text](images/heatmap.png)
   - Checked correlations between `average_ratings`, `num_pages`, and `ratings_count` with `description` using Spearman correlation (values were binary: present or missing).
   - Correlation was not strong enough for further consideration.
-  - ![Alt text](images/correlation_heatmap.png)
+  ![Alt text](images/correlation_heatmap.png)
 - **Data Cleaning & Preparation**:
   - Filtered books with sufficiently long descriptions.
   - Appended `ISBN` to descriptions for identification.
@@ -75,8 +75,8 @@ A machine-learning-based book recommendation system that leverages natural langu
   - Search for books using keywords.
   - Filter results by category and sentiment.
   - Get personalized recommendations based on book descriptions and user preferences.
-  - ![Alt text](images/dashboard-1.PNG)
-  - ![Alt text](images/dashboard-2.PNG)
+  ![Alt text](images/dashboard-1.PNG)
+  ![Alt text](images/dashboard-2.PNG)
 
 ---
 
